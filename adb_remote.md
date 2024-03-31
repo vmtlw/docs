@@ -21,8 +21,7 @@ adb disable-verity
 adb reboot
 ```
 
-Чтобы заблокировать доступ неавторизированным пользователям, необходимо
-выполнить обратную команду:
+Чтобы заблокировать доступ неавторизированным пользователям, необходимо выполнить обратную команду:
 
 ```
 adb enable-verity
@@ -44,11 +43,8 @@ grep ro.adb.secure /vendor/build.prop && sed -i '/ro.adb.secure/s/1/0/' /vendor/
 ```
 
 ### Добавление ключей доступа
-После запуска adbd на клиентской машине, в папке `$HOME` появляется пара
-приватного и публичного ключа. Список авторизованных ключей хранится на
-устройстве в директории [/data/misc/adb/adb_keys]
-Добавьте клиентский ключ доступа, взяв его из
-`$HOME/.android/adbkey.pub`
+После запуска adbd на клиентской машине, в папке `$HOME` появляется пара приватного и публичного ключа. Список авторизованных ключей хранится на устройстве в директории [/data/misc/adb/adb_keys]
+Добавьте клиентский ключ доступа, взяв его из `$HOME/.android/adbkey.pub`
 
 ```bash
 adb root
@@ -65,41 +61,36 @@ adb reboot
 ```
 
 ## Изменение порта доступа
-Измените порт подключения adb на подключенном устройстве на 2002:
+Измените порт подключения adb на подключенном устройстве на 5555:
 
 ```bash
 adb root
 adb remount /vendor
 adb shell
-grep service.adb.tcp.port /vendor/build.prop && sed -i '/service.adb.tcp.port/s/=.*/=2002/' /vendor/build.prop || echo service.adb.tcp.port=2002 >> /vendor/build.prop
+grep service.adb.tcp.port /vendor/build.prop && sed -i '/service.adb.tcp.port/s/=.*/=5555/' /vendor/build.prop || echo service.adb.tcp.port=5555 >> /vendor/build.prop
 reboot
 ```
 
 ### Подключение к устройству с нестандартным портом
-Подключитесь к удаленному adb-интерфейсу устройства с адресом 10.2.19.50 и с открытым портом 2002 с помощью команды`adb connect 10.2.19.50:2002`
+Подключитесь к удаленному adb-интерфейсу устройства с адресом 10.2.19.50 и с открытым портом 5555 с помощью команды`adb connect 10.2.19.50:5555`
 
-`connected to 10.2.19.50:2002`
+`connected to 10.2.19.50:5555`
 
 ## Особенности некоторых аппаратов
 
 ### X96Max+
-В TV-приставках x96 Max+, x96 Max, опции доступа без идентификации
-включены по-умолчанию. Достаточно узнать ip адрес в таких устройствах
-для получения удаленного доступа со стороны персонального компьютера
-например:
+В TV-приставках x96 Max+, x96 Max, опции доступа без идентификации включены по-умолчанию. Достаточно узнать ip адрес в таких устройствах для получения удаленного доступа со стороны персонального компьютера, например:
 
+```bash title="adb connect 10.2.2.211"
+connected to 10.2.2.211:5555
 ```
-adb connect 10.2.2.211
-```
-
-    connected to 10.2.2.211:5555
-Проверьте наличие доступа к консоли аппарата
+Проверьте наличие доступа к консоли аппарата:
 
 ```
 adb shell
 ```
 
-Механизм подключения к удаленному дисплею **scrcpy**
+Механизм подключения к удаленному дисплею **scrcpy**:
 
 ```
 scrcpy
@@ -107,13 +98,12 @@ scrcpy
 
 Наслаждайтесь работой устройства!
 
-Чтобы настроить голосовой поиск необходимо установить сторонний лаунчер,
-лучше использовать: [LeanbackLauncher](https://github.ddsscom/tsynik/LeanbackLauncher/releases)
+Чтобы настроить голосовой поиск необходимо установить сторонний лаунчер,лучше использовать [LeanbackLauncher](https://github.ddsscom/tsynik/LeanbackLauncher/releases)
 
 чтобы установить достаточно выполнить:
 
 ```
-adb install [path]
+adb install [path_to_apk_file]
 ```
 Отключить старый лаунчер:
 
@@ -126,9 +116,7 @@ adb shell pm disable com.amlogic.android.leanbacklauncher
 adb shell pm enable com.amlogic.android.leanbacklauncher
 ```
 
-После данных операций будет запускатся новый лаунчер и стандартный
-поиск, чтобы изменить поиск нужно установить Google for android TV
-(Katniss) ссылка на [Katniss](https://www.apkmirror.com/uploads/?q=google-app-for-android-tv-android-tv)
+После данных операций будет запускатся новый лаунчер и стандартный поиск, чтобы изменить поиск нужно установить Google for android TV (Katniss), ссылка на [Katniss](https://www.apkmirror.com/uploads/?q=google-app-for-android-tv-android-tv)
 рекомендация брать версию 4.6.0.20201109.4
 и выполнить следующие операции:
 
@@ -141,8 +129,7 @@ adb shell mv /data/app/*katniss*/ /system/priv-app/
 adb reboot
 ```
 
-После перезапуска должен запуститься лаунчер с поиском android TV
-(Katniss).
+После перезапуска должен запуститься лаунчер с поиском android TV (Katniss).
 Чтобы выполнить настройку поиска нужно зайти в `настройки->настройки устройства->google assistant`.
 Активировать youtube в поиске katniss нужно выполнить ряд действий:
 
@@ -152,12 +139,10 @@ adb install [path]/SYTV_Bridge_Vandroidtv.apk
 adb install [path]/smartyoutubetv.apk
 ```
 
-Дальше отключаем поиск в smartyoutube настройки->настройки
-устройства->google assistant->searchable app
-Для того чтобы назначить на кнопку пульта определенное действие нужно
-установить 2 apk:
-1)[Buttons remapper](https://play.google.com/store/apps/details?id=com.irishin.buttonsremapper), [Buttons remapper 4pda](https://4pda.ru/forum/index.php?showtopic=751728)
-2)[Power Shortcuts](https://play.google.com/store/apps/details?id=com.ss.powershortcuts), [Power Shortcuts 4pda](https://4pda.ru/forum/index.php?showtopic=919469)
+Дальше отключаем поиск в smartyoutube настройки->настройки устройства->google assistant->searchable app
+Для того чтобы назначить на кнопку пульта определенное действие нужно установить 2 apk:
+1. [Buttons remapper](https://play.google.com/store/apps/details?id=com.irishin.buttonsremapper), [Buttons remapper 4pda](https://4pda.ru/forum/index.php?showtopic=751728)
+2. [Power Shortcuts](https://play.google.com/store/apps/details?id=com.ss.powershortcuts), [Power Shortcuts 4pda](https://4pda.ru/forum/index.php?showtopic=919469)
 
 ```bash
 adb install [path]/Buttons_remapper.apk
@@ -170,7 +155,7 @@ adb install [path]/Power_Shortcuts.apk
 далее нажимаем на галочку
 После данных операций на кнопке будет действие вызова поиска google(katniss).
 
-### AOSP на Mi A2 Lite {#aosp_na_mi_a2_lite}
+### AOSP на Mi A2 Lite
 Запустите возможность отладки в меню разработчиков
 Подключите аппарат к компьютеру и разрешите модификацию системных
 файлов:
@@ -183,16 +168,15 @@ adb remount /vendor
 
 Подключитесь к устройству и включите соединение по сети и проверку adb-клиента по ключу:
 
-```
-adb shell
-grep service.adb.tcp.port /vendor/build.prop && sed -i '/service.adb.tcp.port/s/=.*/=2002/' /vendor/build.prop || echo service.adb.tcp.port=2002 >> /vendor/build.prop
+```bash title="adb shell"
+grep service.adb.tcp.port /vendor/build.prop && sed -i '/service.adb.tcp.port/s/=.*/=5555/' /vendor/build.prop || echo service.adb.tcp.port=5555 >> /vendor/build.prop
 sed -i 's/adb.secure=0/adb.secure=1/'
 /system/etc/prop.default
 reboot
 ```
 Отключите аппарат от компьютера, дождитесь перезагрузки и подключитесь к
-устройству по адресу 10.2.19.2:2002
-adb connect 10.2.19.2:2002
+устройству по адресу 10.2.19.2:5555
+adb connect 10.2.19.2:5555
 Проверьте подключение
 
 ```
@@ -206,11 +190,11 @@ scrcpy
 ```
 Используйте!
 
-### Samsung Galaxy Tab A7 (2020) {#samsung_galaxy_tab_a7_2020}
+### Samsung Galaxy Tab A7 (2020)
 Для запуска adb по сети в устройстве необходимо вносить изменения в
 раздел `/system`, а не `/vendor`
 
-#### Разблокируйте загрузчик {#razblokiruite_zagruzchik}
+#### Разблокируйте загрузчик
 Откроёте меню разработчиков, выберите там пункт **заводская
 разблокировка**.
 Перезагрузите планшет в режим **Download mode**, для этого перезагрузите
@@ -218,7 +202,7 @@ scrcpy
 Согласитесь на удаление данные и разблокировку загрузчика, долгим
 нажатием клавиши увеличения громкости.
 
-#### Получите root {#poluchite_root}
+#### Получите root
 Скачайте оригинальную прошивку, [Magisk Manager](https://github.com/topjohnwu/Magisk/releases/latest), [драйверы](https://developer.samsung.com/mobile/android-usb-driver.html) для windows, а также утилиту [Odin](https://4pda.ru/forum/index.php?showtopic=648344)
 Скачайте прошивку с помощью утилиты [samloader](https://github.com/nlscc/samloader) или попробуйте ее найти на [сайте](https://samfw.com/firmware/SM-A325F/SER)
 Подготовьте место для загрузки
@@ -271,7 +255,7 @@ adb -d pull /sdcard/Download/magisk_patched.tar .
 - Загрузитесь в систему, проверьте, что у вас работает root-доступ.
 - Включите режим для разработчиков и вновь разрешите отладку по usb.
 
-#### Добавьте опцию для автоматического запуска adb по сети {#dobavte_optsiiu_dlia_avtomaticheskogo_zapuska_adb_po_seti}
+#### Добавьте опцию для автоматического запуска adb по сети
 ```
 adb shell
 ```
@@ -279,7 +263,7 @@ adb shell
 
 ```
 mount -o remount,rw /
-echo service.adb.tcp.port=2002 >> /system/build.prop
+echo service.adb.tcp.port=5555 >> /system/build.prop
 reboot
 ```
 - Проверьте, что после после перезагрузки аппарат начинает слушать
