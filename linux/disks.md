@@ -15,3 +15,7 @@ udisksctl power-off -b /dev/sdb
 ```
 hdparm -s 0 /dev/sda
 ```
+
+### show more:
+
+[!embed](https://youtu.be/17ntdUP5-Do)
