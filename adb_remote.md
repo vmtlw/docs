@@ -277,8 +277,7 @@ tcp-порт и принимать соединения.
 adb reboot bootloader
 ```
 - Загрузите twrp:
-```
-fastboot boot twrp-daisy-3.3.1-0-offain.img
+```bash title="fastboot boot twrp-daisy-3.3.1-0-offain.img"
     Downloading 'boot.img'
     OKAY [  1.100s]
     booting
