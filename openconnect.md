@@ -209,9 +209,9 @@ OpenConnect (ocserv) — это реализация протокола Cisco An
 Мы хотим использовать аутентификацию по сертификату, но Let's Encrypt не выдает клиентский сертификат, поэтому нам нужно создать собственный центр сертификации. Вы можете использовать openssl для этой работы, но ocserv рекомендует GnuTLS, поэтому я покажу вам, как использовать GnuTLS.
 
 ### Настройка собственного CA (центра сертификации)
-Установите gnutls
+Установите gnutls:
 ```
-emerge net-libs/gnutls
+emerge -v net-libs/gnutls
 ```
 
 Создайте подкаталог /etc/ocserv/ssl
@@ -221,12 +221,13 @@ mkdir -p /etc/ocserv/ssl && cd /etc/ocserv/ssl`
 
 Создайте закрытый ключ для центра сертификации с помощью certtool. По умолчанию он генерирует 3072-битный ключ RSA, чего вполне достаточно.
 ```
-certtool --generate-privkey --outfile ca-privkey.pem
+certtool --generate-privkey \
+--outfile ca-privkey.pem
 ```
 
 Прежде чем создавать сертификат CA, давайте создадим файл шаблона сертификата CA. Формат файла шаблона можно найти в руководстве по certtool ( man certtool).
 ```
-vim ca-cert.cfg
+vi ca-cert.cfg
 ```
 Добавьте в файл следующие строки. Замените заполнители соответствующими значениями.
 
@@ -259,7 +260,10 @@ crl_signing_key
 ```
 Сохраните и закройте файл. Теперь сгенерируйте сертификат CA, используя конфигурации из файла шаблона.
 ```
-certtool --generate-self-signed --load-privkey ca-privkey.pem --template ca-cert.cfg --outfile ca-cert.pem
+certtool --generate-self-signed \
+--load-privkey ca-privkey.pem \
+--template ca-cert.cfg \
+--outfile ca-cert.pem
 ```
 Теперь у нас есть файл сертификата CA ( ca-cert.pem).
 
@@ -268,7 +272,8 @@ certtool --generate-self-signed --load-privkey ca-privkey.pem --template ca-cert
 
 Теперь выполните следующую команду, чтобы сгенерировать закрытый ключ клиента.
 ```
-certtool --generate-privkey --outfile client-privkey.pem
+certtool --generate-privkey \
+--outfile client-privkey.pem
 ```
 
 Создайте файл шаблона сертификата клиента.
@@ -302,12 +307,24 @@ encryption_key
 ```
 Сохраните и закройте файл. Затем выполните следующую команду, чтобы сгенерировать сертификат клиента, который будет подписан закрытым ключом CA.
 ```
-certtool --generate-certificate --load-privkey client-privkey.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-privkey.pem --template client-cert.cfg --outfile client-cert.pem
+certtool --generate-certificate \
+--load-privkey client-privkey.pem \
+--load-ca-certificate ca-cert.pem \
+--load-ca-privkey ca-privkey.pem \
+--template client-cert.cfg \
+--outfile client-cert.pem
 ```
 
 Объедините закрытый ключ клиента и сертификат в файл PKCS #12, защищенный PIN-кодом.
 ```
-certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher aes-256 --outfile client.p12 --outder --p12-name admin --empty-password 
+certtool --to-p12 \
+--load-privkey client-privkey.pem \
+--load-certificate client-cert.pem \
+--pkcs-cipher aes-256 \
+--outfile client.p12 \
+--outder \
+--p12-name admin \
+--empty-password
 ```
                                         
 ### aутентификация сертификата ocserv
@@ -316,7 +333,14 @@ certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-ce
 
 Обратите внимание, что приложение Ciso AnyConnect для iOS не поддерживает шифр AES-256. Он откажется импортировать сертификат клиента. Если пользователь использует устройство iOS, вы можете выбрать шифр 3des-pkcs12.
 ```
-certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher 3des-pkcs12 --outfile ios-client.p12 --outder
+certtool --to-p12 \
+--load-privkey client-privkey.pem \
+--load-certificate client-cert.pem \
+--pkcs-cipher 3des-pkcs12 \
+--outfile ios-client.p12 \
+--outder \
+--p12-name admin \
+--hash SHA1
 ```
 Закрытый ключ клиента и сертификат объединены в один файл ios-client.p12.
 
@@ -327,12 +351,20 @@ certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-ce
 
 Чтобы сохранить секретные ключи конечных пользователей, пользователи могут генерировать запрос на подпись сертификата (CSR) со своими собственными секретными ключами, а затем отправлять запросы на сертификаты администратору, который затем выдает пользователям клиентские сертификаты. Сначала им необходимо сгенерировать закрытый ключ и шаблон сертификата клиента, используя команды, упомянутые выше. Затем сгенерируйте CSR с помощью следующей команды. Файл request.pemподписан закрытым ключом пользователя.
 ```
-certtool --generate-request --load-privkey client-privkey.pem --template client-cert.cfg --outfile request.pem
+certtool --generate-request \
+--load-privkey client-privkey.pem \
+--template client-cert.cfg \
+--outfile request.pem
 ```
 
 Затем пользователь отправляет request.pem файл client-cert.cfg администратору, который запускает следующую команду для создания сертификата клиента.
 ```
-certtool --generate-certificate --load-ca-certificate ca-cert.pem --load-ca-privkey ca-privkey.pem --load-request request.pem --template client-cert.cfg --outfile client-cert.pem
+certtool --generate-certificate \
+--load-ca-certificate ca-cert.pem \
+--load-ca-privkey ca-privkey.pem\
+--load-request request.pem \
+--template client-cert.cfg \
+--outfile client-cert.pem
 ```
 
 После этого администратор отправляет client-cert.pem пользователю файл сертификата.
@@ -388,7 +420,7 @@ emerge openconnect
 ```
 openconnect -b vpn.example.com -c client.p12
 ```
-Вам будет предложено разблокировать закрытый ключ клиента с помощью кодовой фразы, которую вы установили ранее в этом руководстве. Если парольная фраза введена правильно, вы должны быть подключены к VPN-серверу.
+Вам будет предложено разблокировать закрытый ключ клиента с помощью PIN кода, который вы установили ранее в этом руководстве. Если PIN код введен правильно, вы должны быть подключены к VPN-серверу.
 
 
 ### Использование аутентификации сертификата на устройстве iOS
@@ -409,4 +441,3 @@ tls-priorities = tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-RSA:-VERS-
 
 ### Примечание
 Если вы видите фразу с `SSL 3.3` в журналах ocserv, не паникуйте. SSL 3.3 — это не TLS 1.2. Вы используете безопасное соединение TLS.
-
