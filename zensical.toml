@@ -328,4 +328,4 @@ name = "telegram"
 [[project.extra.social]]
 icon = "fontawesome/brands/bitcoin"
 link = "bitcoin:bc1qqkdj5txcavgx9gnwm5k8ra9a4hc8x8rahs3m0x?message=payment to vmtlw?""
-name = "telegram"
+name = "bitcoin"
