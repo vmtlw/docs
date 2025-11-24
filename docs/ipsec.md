@@ -93,6 +93,12 @@ iptables -A FORWARD -s 10.10.10.0/24 -o br0 -j ACCEPT
 iptables -A FORWARD -d 10.10.10.0/24 -i br0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o br0 -j MASQUERADE
 ```
+Так же если сервер находится за NAT то нужно пробросить порты:
+```
+UDP/4500 - NAT-T
+UDP-500 - IKE
+IPSEC-ESP (без указанрия порта)
+```
 
 Теперь ваша VPN-сеть должна быть настроена и готова к работе.
 
