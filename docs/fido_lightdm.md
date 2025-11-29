@@ -1,4 +1,3 @@
-
 ---
 title: LightDM FIDO2
 icon: lucide/hard-drive
