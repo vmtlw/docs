@@ -75,4 +75,25 @@ sudo pamtester login $USER authenticate
 sudo pamtester lightdm $USER authenticate
 ```
 
+Для того чтобы при подключении по ssh была дополнительная проверка по физическому ключу необходимо создать пару ключей ed25519_sk и при создании привязать их к нашему физическому ключу:
 
+```
+ssh-keygen -t ed25519-sk -O resident -O verify-required
+Generating public/private ed25519-sk key pair.
+You may need to touch your authenticator to authorize key generation.
+Enter PIN for authenticator: 
+You may need to touch your authenticator again to authorize key generation.
+Enter file in which to save the key (/home/rooty/.ssh/id_ed25519_sk): 
+Enter passphrase for "/home/rooty/.ssh/id_ed25519_sk" (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/rooty/.ssh/id_ed25519_sk
+Your public key has been saved in /home/rooty/.ssh/id_ed25519_sk.pub
+The key fingerprint is:
+SHA256:R5EJYMyOLf3Ms47nhw0IgFQVpRfA46dconur8emG2jA rooty@desktop
+The key's randomart image is:
++[ED25519-SK 256]-+
+```
+
+А далее можно раскидать открытый ключ id_ed25519_sk.pub по нашим серверам
+
+При попытке подключения по ssh на удаленном сервере c с использованием созданного нами d_ed25519_sk будет использован фищзический ключ 
