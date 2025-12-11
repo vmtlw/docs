@@ -4,9 +4,10 @@ icon: lucide/globe-lock
 ---
 
 #### этот скрипт поможет что угодно переданное ему в stdin быстро отправить в телеграм 
-```bash file="./script.sh"
-#!/bin/bash
 
+```bash file="script.sh"
+
+#!/bin/bash
 API_TOKEN="111111111111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 CHAT_ID="999999999"
 
@@ -15,7 +16,10 @@ curl -s -X POST \
 -d text="`cat`" \
 https://api.telegram.org/bot$API_TOKEN/sendMessage
 ```
+
+
 Пример использования:
+
 ```bash
 echo "Hello World!" | ./alert.sh
 ```
