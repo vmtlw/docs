@@ -5,7 +5,7 @@ icon: lucide/globe-lock
 
 #### этот скрипт поможет что угодно переданное ему в stdin быстро отправить в телеграм 
 
-```bash file="script.sh"
+```bash
 
 #!/bin/bash
 API_TOKEN="111111111111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
