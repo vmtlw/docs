@@ -5,7 +5,7 @@ icon: lucide/globe-lock
 
 #### этот скрипт поможет что угодно переданное ему в stdin быстро отправить в телеграм 
 
-#!/bin/bash file=script.sh
+#!/bin/bash file="./script.sh"
 
 API_TOKEN="111111111111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 CHAT_ID="999999999"

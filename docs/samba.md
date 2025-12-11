@@ -4,7 +4,7 @@ icon: lucide/globe-lock
 ---
 # Конфиг шаринга самбы (1 публичной и 1 приватной папки , с поддежкой unix simlinks )
 
-```bash file=/etc/samba/smb.conf
+```bash file="/etc/samba/smb.conf"
 [global]
 allow insecure wide links = yes
 use sendfile = yes
