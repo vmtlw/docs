@@ -1,3 +1,8 @@
+---
+title: bash 
+icon: lucide/globe-lock
+---
+
 #### bash
 
 ```bash 
