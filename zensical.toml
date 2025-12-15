@@ -338,3 +338,16 @@ paths = ["src"]
 docstring_style = "google"
 inherited_members = true
 show_source = false
+
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+pygments_lang_class = true
+auto_title = true
+linenums = true
+line_spans = "__span"
+[project.markdown_extensions.pymdownx.superfences]
+
+[project.markdown_extensions.pymdownx.details]
+
+
+
