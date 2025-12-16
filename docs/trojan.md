@@ -62,6 +62,7 @@ Requires=containerd.service
 [Service]
 Restart=unless-stopped
 ExecStartPre=/bin/sh -c '/usr/bin/ctr tasks kill vpn || true; /usr/bin/ctr container rm vpn || true'
+ExecStartPre=/bin/sh -c 'ctr images ls | grep -q "docker.io/alireza7/x-ui:latest" || ctr images pull docker.io/alireza7/x-ui:latest'
 ExecStart=/usr/bin/ctr run --rm --mount type=bind,src=/srv/docker/3x-ui/db,dst=/etc/x-ui,options=rbind:rw --mount type=bind,src=/etc/nginx/ssl,dst=/root/cert,options=rbind:rw --net-host docker.io/alireza7/x-ui:latest vpn
 ExecStop=/usr/bin/ctr tasks kill vpn
 KillMode=process
