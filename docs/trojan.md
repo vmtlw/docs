@@ -52,3 +52,23 @@ services:
 ```bash
 ctr run -d  --mount type=bind,src=/srv/docker/3x-ui/db,dst=/etc/x-ui,options=rbind:rw --mount type=bind,src=/etc/nginx/ssl,dst=/root/cert,options=rbind:rw --net-host docker.io/alireza7/x-ui:latest vpn
 ```
+
+```bash file="/etc/systemd/system/3xui.service"
+
+[Unit]
+Description=3x-ui container
+After=network.target containerd.service
+Requires=containerd.service
+
+[Service]
+Restart=unless-stopped
+ExecStartPre=/bin/sh -c '/usr/bin/ctr tasks kill vpn || true; /usr/bin/ctr container rm vpn || true'
+ExecStart=/usr/bin/ctr run --rm --mount type=bind,src=/srv/docker/3x-ui/db,dst=/etc/x-ui,options=rbind:rw --mount type=bind,src=/etc/nginx/ssl,dst=/root/cert,options=rbind:rw --net-host docker.io/alireza7/x-ui:latest vpn
+ExecStop=/usr/bin/ctr tasks kill vpn
+KillMode=process
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
+
+```
