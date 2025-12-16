@@ -47,3 +47,8 @@ services:
     network_mode: host
     restart: unless-stopped
 ```
+
+
+```bash
+ctr run -d  --mount type=bind,src=/srv/docker/3x-ui/db,dst=/etc/x-ui,options=rbind:rw --mount type=bind,src=/etc/nginx/ssl,dst=/root/cert,options=rbind:rw --net-host docker.io/alireza7/x-ui:latest vpn
+```
