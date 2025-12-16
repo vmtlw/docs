@@ -53,8 +53,7 @@ services:
 ctr run -d  --mount type=bind,src=/srv/docker/3x-ui/db,dst=/etc/x-ui,options=rbind:rw --mount type=bind,src=/etc/nginx/ssl,dst=/root/cert,options=rbind:rw --net-host docker.io/alireza7/x-ui:latest vpn
 ```
 
-```bash file="/etc/systemd/system/3xui.service"
-
+```bash
 [Unit]
 Description=3x-ui container
 After=network.target containerd.service
@@ -70,5 +69,4 @@ TimeoutStartSec=0
 
 [Install]
 WantedBy=multi-user.target
-
 ```
