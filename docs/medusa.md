@@ -2,6 +2,9 @@
 title: medusa
 icon: lucide/ethernet-port
 ---
+
+[посление релизы](`https://github.com/jonasvinther/medusa/releases/tag/v0.7.3`)
+
 #### выведет в консоль что на сервере, тут же можем перенаправить в файл этот вывод:
 ```
 medusa export internal/namespace/common/ --address="https://vault.server.online" --token="hvs.*****" > /.medusa-dump.yaml
