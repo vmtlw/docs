@@ -1,2 +1,2 @@
-link - https://vmtlw.github.io/docs
-icons - https://lucide.dev/icons/ 
+[`site`](https://wiki.vmtlw.ru/docs)
+[`icons`](https://lucide.dev/icons/)
