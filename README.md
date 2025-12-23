@@ -1,2 +1,2 @@
-[`site`](https://wiki.vmtlw.ru/docs)
-[`icons`](https://lucide.dev/icons/)
+[`сама wiki`](https://wiki.vmtlw.ru/)
+[`сайт используемых иконок`](https://lucide.dev/icons/)
