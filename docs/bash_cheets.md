@@ -174,3 +174,4 @@ exit    "вернуться в Vim
 - **Сеансовые:**
 ```bash
 export PATH="$PATH:/home/my_user/tmp/usr/bin"
+```
