@@ -3,10 +3,7 @@ icon: lucide/file-terminal
 title: preseed
 ---
 
-
-
 Можно воспользоваться вот таким:
-
 ```shell tilte="preseed.conf"
 ### Локализация
 d-i debian-installer/language string ru
