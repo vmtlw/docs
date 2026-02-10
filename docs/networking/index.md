@@ -15,3 +15,4 @@ icon: lucide/network
 - [Wake-on-LAN (WoL)](wake-on-lan.md) - Технология удаленного включения компьютера по сети
 - [Netpan](netpan.md) - Информация по инструменту Netpan
 - [Trojan](trojan.md) - Настройка Trojan proxy
+- [Wireguard](wireguard.md) - Настройка Wireguard в Luci интерфейсе openwrt
